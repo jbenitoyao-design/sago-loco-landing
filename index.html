@@ -145,32 +145,34 @@
 
     <div class="form-card">
 
-      <form class="lead-form" id="leadForm">
+      <form class="lead-form" id="leadForm" action="https://script.google.com/macros/s/AKfycbzy6KfcRZ0zbRBrcQqeYes2mlueE752Zcu8HjS-UFkbl8Akj8bnK-ElhBHjQ6W3cIni/exec" method="POST" target="hidden_iframe">
         <h3>Claim Your Free Site Score</h3>
 
         <div class="field-row">
           <div>
             <label for="fullName">Full Name</label>
-            <input required type="text" id="fullName" placeholder="Juan Dela Cruz">
+            <input required type="text" id="fullName" name="fullName" placeholder="Juan Dela Cruz">
           </div>
           <div>
             <label for="mobile">Mobile Number</label>
-            <input required type="tel" id="mobile" placeholder="09XX XXX XXXX">
+            <input required type="tel" id="mobile" name="mobile" placeholder="09XX XXX XXXX">
           </div>
         </div>
         <div class="field">
           <label for="email">Email Address</label>
-          <input required type="email" id="email" placeholder="juan@email.com">
+          <input required type="email" id="email" name="email" placeholder="juan@email.com">
         </div>
         <div class="field full">
           <label for="location">Target Location / Address</label>
-          <input required type="text" id="location" placeholder="e.g. Brgy. San Roque, Marikina">
+          <input required type="text" id="location" name="location" placeholder="e.g. Brgy. San Roque, Marikina">
         </div>
 
         <button type="submit" class="cta-btn">Get My Free Site Score &rarr;</button>
 
         <div class="form-note">No cost. No obligation. We'll email your results in 24-48 hours.</div>
       </form>
+
+      <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
       <div class="success" id="successMsg">
         <div class="success-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="5,13 10,18 19,7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -193,27 +195,21 @@
   var form = document.getElementById('leadForm');
   var success = document.getElementById('successMsg');
   var resetBtn = document.getElementById('resetBtn');
-  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzy6KfcRZ0zbRBrcQqeYes2mlueE752Zcu8HjS-UFkbl8Akj8bnK-ElhBHjQ6W3cIni/exec';
+  var iframe = document.getElementById('hidden_iframe');
+  var submittedViaForm = false;
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+  form.addEventListener('submit', function () {
+    submittedViaForm = true;
+    // No preventDefault: let the browser submit the real form into the
+    // hidden iframe. The success message shows once the iframe finishes loading.
+  });
 
-    var data = new FormData();
-    data.append('fullName', document.getElementById('fullName').value);
-    data.append('mobile', document.getElementById('mobile').value);
-    data.append('email', document.getElementById('email').value);
-    data.append('location', document.getElementById('location').value);
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: data
-    }).catch(function (err) {
-      console.error('Submission error:', err);
-    });
-
-    form.classList.add('hide');
-    success.classList.add('show');
+  iframe.addEventListener('load', function () {
+    if (submittedViaForm) {
+      form.classList.add('hide');
+      success.classList.add('show');
+      submittedViaForm = false;
+    }
   });
 
   resetBtn.addEventListener('click', function () {
