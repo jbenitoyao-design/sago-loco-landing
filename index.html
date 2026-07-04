@@ -193,9 +193,25 @@
   var form = document.getElementById('leadForm');
   var success = document.getElementById('successMsg');
   var resetBtn = document.getElementById('resetBtn');
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzy6KfcRZ0zbRBrcQqeYes2mlueE752Zcu8HjS-UFkbl8Akj8bnK-ElhBHjQ6W3cIni/exec';
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+
+    var data = new FormData();
+    data.append('fullName', document.getElementById('fullName').value);
+    data.append('mobile', document.getElementById('mobile').value);
+    data.append('email', document.getElementById('email').value);
+    data.append('location', document.getElementById('location').value);
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    }).catch(function (err) {
+      console.error('Submission error:', err);
+    });
+
     form.classList.add('hide');
     success.classList.add('show');
   });
