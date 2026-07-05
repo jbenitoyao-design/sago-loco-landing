@@ -99,16 +99,7 @@ src="https://www.facebook.com/tr?id=774130161924077&ev=PageView&noscript=1"
 </style>
 </head>
 <body>
- <script>
-(function() {
-  var f = document.querySelector('form');
-  if (f) {
-    f.addEventListener('submit', function() {
-      if (typeof fbq === 'function') fbq('track', 'Lead');
-    });
-  }
-})();
-</script>
+
 <div class="page">
   <div class="blob-a"></div>
   <div class="blob-b"></div>
@@ -233,6 +224,7 @@ src="https://www.facebook.com/tr?id=774130161924077&ev=PageView&noscript=1"
     if (submittedViaForm) {
       form.classList.add('hide');
       success.classList.add('show');
+      if (typeof fbq === 'function') fbq('track', 'Lead'); 
       submittedViaForm = false;
       setTimeout(function () {
         window.location.href = 'https://sitescan.sagoloco.com/pioneer-batch.html';
