@@ -209,6 +209,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       var nameField = form.querySelector('[name="name"]');
       var phoneField = form.querySelector('[name="phone"]');
       if (!nameField || !phoneField) return;
+      // Refuse to send if the fields are actually empty (bots/crawlers can
+      // trigger a submit event without typing anything, bypassing the
+      // browser's own "required" check).
+      if (!nameField.value.trim() || !phoneField.value.trim()) return;
 
       var iframe = document.getElementById('__leadBridgeIframe');
       if (!iframe) {
